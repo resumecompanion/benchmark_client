@@ -1,8 +1,6 @@
 # BenchmarkClient
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/benchmark_client`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Benchmark ruby client which wraper the sameple the benchmark provide [here](https://apidocs.benchmarkemail.com/#/download-wrappers)
 
 ## Installation
 
@@ -22,18 +20,53 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Config the credential 
 
-## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+    ```
+    # in initializer/benchmark_client.rb
+    
+    BenchmarkClient.configure do |config| 
+      config.username = 'your_user_name'
+      config.password = 'password'
+      config.api_url = 'url_of_api_version'
+      config.default_list_name = 'the list name you will create in benchmark'
+    end
+    ```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+### Create list 
 
-## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/Alan Yu/benchmark_client. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+    ```
+    list_id = BenchmarkClient::Base.create_list # 
 
+    ```
+
+### Update Contacts into list 
+
+    ```
+    list_id = BenchmarkClient::Base.get_list
+
+    contacts = [
+    {:email => 'user1@mail.com', :firstname => 'PeterChangeName', :lastname => 'Parker', custom_field: 1, custom_field2: 2},
+    {:email => 'user2@mail.com', :firstname => 'Bruce', :lastname => 'Banner'}
+     ]
+
+
+    BenchmarkClient.update(list_id, contacts)
+    ```
+
+### Custom Fields in Benchmark contacts
+
+For the custom field in the contacts, you need to go to `Benchmark -> Contacts -> Edit the contact field`
+
+to add new field you will update.
+
+
+
+### Benchmark api documentation 
+
+[doc](https://apidocs.benchmarkemail.com/#/library)
 
 ## License
 

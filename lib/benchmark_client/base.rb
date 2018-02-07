@@ -12,6 +12,8 @@ module BenchmarkClient
     end
 
     def update(list_id, contacts_array)
+      list_id ||= get_list
+
       result = batchAddContacts(list_id, contacts_array)
 
       if status
@@ -23,6 +25,12 @@ module BenchmarkClient
 
     def create_list(list_name = BenchmarkClient.configuration.default_list_name)
       listCreate(list_name)
+    end
+
+    def get_list(list_name = BenchmarkClient.configuration.default_list_name)
+      BenchmarkClient.configuration.list_id ||= begin
+                                                  listGet(list_name, 1, 100, '', '').first['id']
+                                                end
     end
 
     def method_missing(api_method, *args)
