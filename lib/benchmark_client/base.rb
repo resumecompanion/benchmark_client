@@ -1,3 +1,5 @@
+require 'xmlrpc/client'
+
 module BenchmarkClient
   class BenchmarkError < StandardError ; end
   class Base
@@ -5,7 +7,7 @@ module BenchmarkClient
       new.update(*args)
     end
 
-    def initialize(*args)
+    def initialize
       setup_remote_server
     end
 
@@ -15,8 +17,12 @@ module BenchmarkClient
       if status
         true
       else
-        raise BenchmarkError.new("Error Code: #{result.faultCode} Error Description #{result.faultString}")
+        raise_error(result)
       end
+    end
+
+    def create_list(list_name = BenchmarkClient.configuration.default_list_name)
+      listCreate(list_name)
     end
 
     def method_missing(api_method, *args)
@@ -30,15 +36,18 @@ module BenchmarkClient
     attr_accessor :status, :server
 
     def setup_remote_server
-      self.server = XMLRPC::Client.new2(BenchmarkError.configuration.api_url)
-      self.status, result = server.call2('login', Benchmark.configuration.username, Benchmark.configuration.password)
+      self.server = XMLRPC::Client.new2(BenchmarkClient.configuration.api_url)
+      self.status, result = server.call2('login', BenchmarkClient.configuration.username, BenchmarkClient.configuration.password)
 
       if status
         @token = result
       else
-        puts "Error Code: #{result.faultCode}"
-        puts "Error Description: #{result.faultString}"
+        raise_error(result)
       end
+    end
+
+    def raise_error(result)
+      raise BenchmarkError, "Error Code: #{result.faultCode} Error Description #{result.faultString}"
     end
   end
 end
