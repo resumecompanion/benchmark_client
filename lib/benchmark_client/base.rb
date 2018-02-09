@@ -7,6 +7,10 @@ module BenchmarkClient
       new.update(*args)
     end
 
+    def self.create_list(list_name = nil)
+      new.create_list(list_name)
+    end
+
     def initialize
       setup_remote_server
     end
