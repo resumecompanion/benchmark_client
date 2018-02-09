@@ -7,7 +7,8 @@ Benchmark ruby client which wraper the sameple the benchmark provide [here](http
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'benchmark_client'
+gem 'benchmark_client', git: 'git@github.com:resumecompanion/benchmark_client.git'
+
 ```
 
 And then execute:
@@ -22,8 +23,8 @@ Or install it yourself as:
 
 ### Config the credential 
 
+```ruby
 
-    ```
     # in initializer/benchmark_client.rb
     
     BenchmarkClient.configure do |config| 
@@ -32,9 +33,13 @@ Or install it yourself as:
       config.api_url = 'url_of_api_version'
       config.default_list_name = 'the list name you will create in benchmark'
     end
-    ```
+
+```
+
 
 ### Create list 
+
+When sync user's data to benchmark, you need to create a list name first
 
 
     ```
